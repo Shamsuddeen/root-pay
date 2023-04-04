@@ -138,8 +138,11 @@ exports.createCard = asyncHandler(async (req, res, next) => {
     const card = await sendRequest('sudo', '/cards', 'post', {
         customerId: update.data._id, // Card Holder's ID from Sudo
         fundingSourceId: process.env.DEFAULT_FUNDING_SOURCE, // Funding Source ID from env file
+        debitAccountId: process.env.DEBIT_ACCOUNT, // Funding Source ID from env file
         type: "virtual",
         currency: "NGN",
+        issuerCountry: "NGA",
+        sendPINSMS: true,
         status: "active",
         brand: "Verve",
         metadata: {},
@@ -184,6 +187,51 @@ exports.createCard = asyncHandler(async (req, res, next) => {
         message: 'Card created successfully',
         data: result
     });
+});
+
+exports.displayCardNumber = asyncHandler(async (req, res, next) => {
+    const card = await Card.findById(req.params.card);
+    const cardNumber = await sendRequest('sudo-vault', '/cards/'+card.cardId+'/secure-data/number', 'get')
+    // console.log('====================================');
+    // console.log(card);
+    // console.log('====================================');
+    if(cardNumber.statusCode == 200){
+        res.status(200).send({
+            status: "success",
+            message: 'Request successful.',
+            data: cardNumber.data
+        });
+    }
+});
+
+exports.displayCardCvv = asyncHandler(async (req, res, next) => {
+    const card = await Card.findById(req.params.card);
+    const cardCvv = await sendRequest('sudo-vault', '/cards/'+card.cardId+'/secure-data/cvv2', 'get')
+    // console.log('====================================');
+    // console.log(card);
+    // console.log('====================================');
+    if(cardCvv.statusCode == 200){
+        res.status(200).send({
+            status: "success",
+            message: 'Request successful.',
+            data: cardCvv.data
+        });
+    }
+});
+
+exports.displayCardPin = asyncHandler(async (req, res, next) => {
+    const card = await Card.findById(req.params.card);
+    const cardPin = await sendRequest('sudo-vault', '/cards/'+card.cardId+'/secure-data/defaultPin', 'get')
+    // console.log('====================================');
+    // console.log(card);
+    // console.log('====================================');
+    if(cardPin.statusCode == 200){
+        res.status(200).send({
+            status: "success",
+            message: 'Request successful.',
+            data: cardPin.data
+        });
+    }
 });
 
 exports.updateCard = asyncHandler(async (req, res, next) => {
