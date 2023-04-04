@@ -18,6 +18,7 @@ const app = express();
 // Import routes files
 const auth = require("./Route/auth");
 const users = require("./Route/user");
+const cards = require("./Route/card");
 
 // Configure bodyparser to handle post requests
 app.use(bodyParser.urlencoded({
@@ -39,6 +40,7 @@ if(process.env.NODE_ENV === 'development'){
 // Mount API routes in the App
 app.use('/auth', auth);
 app.use('/users', users);
+app.use('/cards', cards);
 
 // Launch app to listen to specified port
 app.listen(port, function () {
