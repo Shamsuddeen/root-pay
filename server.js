@@ -15,6 +15,9 @@ const connectDB = require('./Config/db');
 connectDB();
 const app = express();
 
+// Import routes files
+const auth = require("./Route/auth");
+
 // Configure bodyparser to handle post requests
 app.use(bodyParser.urlencoded({
     extended: true
@@ -31,6 +34,9 @@ app.get('/', (req, res) => res.send('Hello from Root.Cards'));
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
 }
+
+// Mount API routes in the App
+app.use('/auth', auth);
 
 // Launch app to listen to specified port
 app.listen(port, function () {
