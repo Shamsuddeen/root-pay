@@ -5,7 +5,12 @@ const sendRequest = async (vendor, url, method, data, header, token) => {
         var base_uri = "https://api.sandbox.sudo.cards";
         var headers = {
             'Authorization': 'Bearer ' + process.env.SUDO_KEY
-        }     
+        }   
+    } else if(vendor == "sudo-vault"){
+        var base_uri = "https://vault.sandbox.sudo.cards";
+        var headers = {
+            'Authorization': 'Bearer ' + process.env.SUDO_KEY
+        }
     } else if (vendor == "safehaven") {
         var base_uri = "https://api.sandbox.safehavenmfb.com";
         var headers = header
