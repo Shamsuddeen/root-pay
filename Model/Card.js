@@ -6,11 +6,11 @@ const cardSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    cardId: {
+    cardId: { // Card ID from Sudo (Issuer)
         type: String,
         required: true
     },
-    customerId: {
+    customerId: { // Card Holder's ID from Sudo
         type: String,
         required: true,
         unique: true
