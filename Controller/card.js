@@ -241,7 +241,6 @@ exports.simulateTransaction = asyncHandler(async (req, res, next) => {
     if (!card._id) {
         return next(new ErrorResponse("Card not found!", 404));
     }
-
     const simulate = await sendRequest('sudo', '/cards/simulator/authorization', 'post', {
         channel: req.body.channel,
         type: trxnType.toLocaleLowerCase(),
