@@ -26,6 +26,7 @@ exports.getCard = asyncHandler(async (req, res, next) => {
         return next(new ErrorResponse("Card not found!", 404));
         // console.log('card not found - 404');
     } else{
+        const sudoCard = await sendRequest('sudo', '/cards/'+card.cardId, 'get');
         const cardToken = await sendRequest('sudo', '/cards/'+card.cardId+'/token', 'get');
         // console.log('====================================');
         // console.log(cardToken);
@@ -35,6 +36,8 @@ exports.getCard = asyncHandler(async (req, res, next) => {
             message: 'Card fetched successfully',
             data: {
                 card,
+                customer: sudoCard.data.customer,
+                account: sudoCard.data.account,
                 token: cardToken.data.token // The token will be used to reveal full card details
             }
         })
