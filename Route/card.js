@@ -9,6 +9,7 @@ const {
     displayCardNumber,
     displayCardCvv,
     displayCardPin,
+    simulateTransaction,
     updateCard
 } = require('../Controller/card');
 
@@ -19,6 +20,10 @@ router
     .route('/')
     .get(getCards)
     .post(createCard);
+router
+    .route('/simulate')
+    .post(simulateTransaction);
+router
 router
     .route('/rate')
     .get(getExchangeRate);
