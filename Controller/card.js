@@ -234,6 +234,32 @@ exports.displayCardPin = asyncHandler(async (req, res, next) => {
     }
 });
 
+exports.simulateTransaction = asyncHandler(async (req, res, next) => {
+    const card = await Card.findById(req.body.card);
+    const trxnType = req.body.type;
+
+    if (!card._id) {
+        return next(new ErrorResponse("Card not found!", 404));
+    }
+
+    const simulate = await sendRequest('sudo', '/cards/simulator/authorization', 'post', {
+        channel: req.body.channel,
+        type: trxnType.toLocaleLowerCase(),
+        amount: parseInt(req.body.amount),
+        cardId: card.cardId,
+        currency: "NGN",
+        merchant: {
+            category: "7399",
+            merchantId: "000000001",
+            name: "Sudo Inc",
+            city: "Zing",
+            state: "TR",
+            country: "NG"
+        }
+    });
+    res.send(simulate);
+});
+
 exports.updateCard = asyncHandler(async (req, res, next) => {
     const card = await Card.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
