@@ -5,6 +5,7 @@ const {
     getCard,
     getUserCard,
     getExchangeRate,
+    fundCard,
     createCard,
     displayCardNumber,
     displayCardCvv,
@@ -20,6 +21,9 @@ router
     .route('/')
     .get(getCards)
     .post(createCard);
+router
+    .route('/fund-card')
+    .post(fundCard);
 router
     .route('/simulate')
     .post(simulateTransaction);

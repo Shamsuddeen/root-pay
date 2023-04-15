@@ -58,6 +58,38 @@ exports.getExchangeRate = asyncHandler(async (req, res, next) => {
     }
 });
 
+exports.fundCard = asyncHandler(async (req, res, next) => {
+    const card = await Card.findById(req.body.card);
+    const amount = parseInt(req.body.amount);
+    if (card == null) {
+        res.send({
+            status: "error",
+            message: "Card not found!",
+        });
+        return next(new ErrorResponse("Card not found!", 404));
+        // console.log('card not found - 404');
+    } else{
+        const sudoCard = await sendRequest('sudo', '/cards/'+card.cardId, 'get');
+        const data = {
+            "debitAccountId": process.env.DEBIT_ACCOUNT,
+            "creditAccountId": sudoCard.data.account._id,
+            "amount": amount,
+            "paymentReference": "balabulu"
+        };
+        const fund = await sendRequest('sudo', '/accounts/transfer', 'post', data);
+        console.log('====================================');
+        console.log(fund);
+        console.log('====================================');
+        if(fund.statusCode == "200"){
+            res.status(200).json({
+                status: "success",
+                message: 'Card funded successfully',
+                data: { }
+            })
+        }
+    }
+})
+
 exports.getUserCard = asyncHandler(async (req, res, next) => {
     const card = await Card.findOne({ user: req.params.user });
 
