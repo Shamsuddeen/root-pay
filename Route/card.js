@@ -6,6 +6,7 @@ const {
     getUserCard,
     getExchangeRate,
     fundCard,
+    withdrawFund,
     createCard,
     displayCardNumber,
     displayCardCvv,
@@ -24,6 +25,9 @@ router
 router
     .route('/fund-card')
     .post(fundCard);
+router
+    .route('/withdraw-fund')
+    .post(withdrawFund);
 router
     .route('/simulate')
     .post(simulateTransaction);
