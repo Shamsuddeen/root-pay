@@ -2,8 +2,6 @@ const ErrorResponse = require('../Utils/errorResponse');
 const asyncHandler = require('../Middleware/async');
 const Transaction = require('../Model/Transaction');
 const Card = require('../Model/Card');
-const Card = require('../Model/User');
-
 
 exports.cardAuthorization = asyncHandler(async (req, res, next) => {
     console.log('====================================');
