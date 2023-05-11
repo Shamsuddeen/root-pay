@@ -3,6 +3,7 @@ const asyncHandler = require('../Middleware/async');
 const sendRequest = require('../Utils/sendRequest');
 const User = require('../Model/User');
 const Card = require('../Model/Card');
+const Transaction = require('../Model/Transaction');
 
 exports.getCards = asyncHandler(async (req, res, next) => {
     const cards = await Card.find();
@@ -75,7 +76,7 @@ exports.fundCard = asyncHandler(async (req, res, next) => {
             "debitAccountId": process.env.DEBIT_ACCOUNT,
             "creditAccountId": sudoCard.data.account._id,
             "amount": amount,
-            "paymentReference": "balabulu"
+            "paymentReference": Date.now()
         };
         const fund = await sendRequest('sudo', '/accounts/transfer', 'post', data);
         console.log('====================================');
@@ -122,7 +123,7 @@ exports.withdrawFund = asyncHandler(async (req, res, next) => {
             "debitAccountId": sudoCard.data.account._id,
             "creditAccountId": process.env.DEBIT_ACCOUNT,
             "amount": amount,
-            "paymentReference": "balabulu"
+            "paymentReference": Date.now()
         };
         const fund = await sendRequest('sudo', '/accounts/transfer', 'post', data);
         console.log('====================================');
