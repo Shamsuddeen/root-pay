@@ -19,6 +19,7 @@ const app = express();
 const auth = require("./Route/auth");
 const users = require("./Route/user");
 const cards = require("./Route/card");
+const webhook = require("./Route/webhook");
 
 // Configure bodyparser to handle post requests
 app.use(bodyParser.urlencoded({
@@ -41,6 +42,7 @@ if(process.env.NODE_ENV === 'development'){
 app.use('/auth', auth);
 app.use('/users', users);
 app.use('/cards', cards);
+app.use('/webhooks', webhook);
 
 // Launch app to listen to specified port
 app.listen(port, function () {
