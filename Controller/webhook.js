@@ -34,7 +34,7 @@ exports.cardAuthorization = asyncHandler(async (req, res, next) => {
                     if (balance >= amount) {
                         // Updated Card and Send response
                         const updateFields = {
-                            "balance": balance
+                            "balance": balance - amount
                         };
                         await Card.findByIdAndUpdate(card._id, updateFields, {
                             new: true,
