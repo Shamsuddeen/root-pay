@@ -61,6 +61,7 @@ exports.getExchangeRate = asyncHandler(async (req, res, next) => {
 exports.fundCard = asyncHandler(async (req, res, next) => {
     const card = await Card.findById(req.body.card);
     const amount = parseInt(req.body.amount);
+    const balance = card.balance;
     if (card == null) {
         res.send({
             status: "error",
@@ -81,6 +82,21 @@ exports.fundCard = asyncHandler(async (req, res, next) => {
         console.log(fund);
         console.log('====================================');
         if(fund.statusCode == "200"){
+            // Updated Card and Send response
+            const updateFields = {
+                "balance": balance + amount
+            };
+            await Card.findByIdAndUpdate(card._id, updateFields, {
+                new: true,
+                runValidators: true
+            });
+            await Transaction.create({
+                user: card.user,
+                cardId: card.cardId,
+                cardPan: card.pan,
+                amount: amount,
+                channel: "Card Funding"
+            });
             res.status(200).json({
                 status: "success",
                 message: 'Card funded successfully',
