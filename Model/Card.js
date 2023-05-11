@@ -15,6 +15,11 @@ const cardSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    balance: {
+        type: Number,
+        required: false,
+        default: 0
+    },
     pan: {
         type: String,
         required: true,
